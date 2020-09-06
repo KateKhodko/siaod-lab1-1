@@ -24,4 +24,9 @@ public class Number {
     public void setNum(double num) {
         this.num = num;
     }
+
+    @Override
+    public String toString() {
+        return num + "*x^(" + degree + ") ";
+    }
 }

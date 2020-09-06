@@ -6,40 +6,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        while (true) {
-            System.out.println("1.Проверить 2 многочлена на равенство\n" +
-                    "2.Вычислить значение многочлена в точке x\n" +
-                    "3.Вычислить сумму многочленов\n" +
-                    "4.Выход\n");
-
-            Scanner scan = new Scanner(System.in);
-            if (scan.hasNextInt()) {
-                int n = scan.nextInt();
-                switch (n) {
-                    case 1:
-                        System.out.println("Ввод первого многочлена");
-                        MyList list1 = enter();
-                        System.out.println("Ввод второго многочлена");
-                        MyList list2 = enter();
-                        equality(list1, list2);
-                        break;
-                    case 2:
-                        System.out.println("Ввод многочлена");
-                        meaning(enter(), enterx());
-                        break;
-                    case 3:
-                        //addDetailByIndex();
-                        break;
-                    case 4:
-                        return;
-                    default:
-                        System.out.println("Пункт меню введен не верно!");
-                }
-            } else {
-                System.out.println("Пункт меню введен не верно!");
-            }
-        }
-
+        System.out.println("Ввод первого многочлена");
+        MyList list1 = enter();
+        System.out.println("Ввод второго многочлена");
+        MyList list2 = enter();
+        equality(sort(list1), sort(list2));
+        System.out.println("Введите x");
+        meaning(sort(list1), enterx());
+        add(list1, list2);
     }
 
     public static MyList enter() {
@@ -95,12 +69,48 @@ public class Main {
     public static double enterx() {
         while (true) {
             Scanner scan = new Scanner(System.in);
-            if (scan.hasNextDouble()) {
-                return scan.nextDouble();
+            if (scan.hasNextInt()) {
+                return scan.nextInt();
             } else {
-                System.out.println("Вы ввели не число!");
+                System.out.println("Вы ввели не целое число!");
             }
         }
+    }
+
+    public static MyList sort(MyList list) {
+        for (int i = 1; i < list.size(); i++) {
+            int degree = list.get(i).getDegree();
+            double num = list.get(i).getNum();
+            int j = i - 1;
+            while (j >= 0 && degree >= list.get(j).getDegree()) {
+                list.get(j + 1).setDegree(list.get(j).getDegree());
+                list.get(j + 1).setNum(list.get(j).getNum());
+                j--;
+            }
+            list.get(j + 1).setNum(num);
+            list.get(j + 1).setDegree(degree);
+        }
+        return checkCommon(list);
+    }
+
+    public static MyList checkCommon(MyList list) {
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i).getDegree() == list.get(i - 1).getDegree()) {
+                int newDegree = list.get(i).getDegree() + list.get(i - 1).getDegree();
+                double newNum = list.get(i).getNum() + list.get(i - 1).getNum();
+                if (newNum != 0) {
+                    list.get(i - 1).setDegree(newDegree);
+                    list.get(i - 1).setNum(newNum);
+                    list.remove(i);
+                } else {
+                    list.remove(i - 1);
+                    list.remove(i - 1);
+                }
+                i--;
+            }
+        }
+        System.out.println(getString(list));
+        return list;
     }
 
     public static void equality(MyList p, MyList q) {
@@ -110,20 +120,38 @@ public class Main {
                     break;
                 }
             }
-            System.out.println("Многочлены P(x) = " + getString(p) + " и Q(x) = " +(getString(q)+ " равны");
+            System.out.println("Многочлены P(x) = " + getString(p) + " и Q(x) = " + getString(q) + " равны");
         } else {
-            System.out.println("Многочлены P(x) = " + getString(p) + " и Q(x) = " +(getString(q)+ "не равны");
+            System.out.println("Многочлены P(x) = " + getString(p) + " и Q(x) = " + getString(q) + "не равны");
         }
     }
 
     public static void meaning(MyList list, double x) {
+        double result = 0;
+        for (int i = 0; i < list.size(); i++) {
+            result += Math.pow(list.get(i).getNum() * x, list.get(i).getDegree());
+        }
+        System.out.println("Результат " + result);
+    }
 
+    public static void add(MyList p, MyList q) {
+        MyList r = new MyList();
+        for (int i = 0; i < p.size(); i++) {
+            r.add(p.get(i));
+        }
+        for (int i = 0; i < q.size(); i++) {
+            r.add(q.get(i));
+        }
+        System.out.println("Сумма многочленов p и q равна R(x) = " + getString(sort(r)));
     }
 
     public static String getString(MyList list) {
-        String str = "";
-        for (int i = 0; i < list.size(); i++) {
-            str += list.get(i).getNum() + "x^" + list.get(i).getDegree() + " ";
+        String str = "0";
+        if (!list.isEmpty()) {
+            str = list.get(0).toString();
+        }
+        for (int i = 1; i < list.size(); i++) {
+            str += " + " + list.get(i).toString();
         }
         return str;
     }

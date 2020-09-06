@@ -5,8 +5,8 @@ public class MyList {
 
     private int size = 0;
 
-    private Node last = header;
 
+    /*
     public void add(Number item) {
         if (size == 0) {
             Node newEntry = new Node(item, null);
@@ -31,13 +31,31 @@ public class MyList {
         }
     }
 
-    /*
+     */
+
+
     public void add(Number item) {
         Node node = new Node(item, null);
-        last.next = node;
-        last = node;
+        if (header.next != null) {
+            Node last = entry(size-1);
+            last.next = node;
+        } else {
+            header.next = node;
+        }
+        size++;
     }
-         */
+
+    public void remove(int index) {
+        Node node = entry(index);
+        if (node.next != null) {
+            node.element = node.next.element;
+            node.next = node.next.next;
+        } else {
+            node.element  = null;
+            node.next = null;
+        }
+        size--;
+    }
 
     public Number get(int i) {
         return entry(i).element;
@@ -47,6 +65,9 @@ public class MyList {
         return size;
     }
 
+    public boolean isEmpty() {
+        return size == 0;
+    }
 
     private Node entry(int index) {
         if (index < 0 || index >= size)
