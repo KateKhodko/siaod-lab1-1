@@ -1,20 +1,22 @@
 package com.company;
 
 public class MyList {
-    private final Entry header = new Entry();
+    private final Node header = new Node();
 
     private int size = 0;
 
+    private Node last = header;
+
     public void add(Number item) {
         if (size == 0) {
-            Entry newEntry = new Entry(item, null);
+            Node newEntry = new Node(item, null);
             header.next = newEntry;
             size++;
         } else {
-            Entry entry = header;
+            Node entry = header;
             for (int i = 0; i <= size; i++) {
                 if (entry.next == null || item.getDegree() > entry.next.element.getDegree()) {
-                    Entry newEntry = new Entry(item, entry.next);
+                    Node newEntry = new Node(item, entry.next);
                     entry.next = newEntry;
                     size++;
                     break;
@@ -29,6 +31,14 @@ public class MyList {
         }
     }
 
+    /*
+    public void add(Number item) {
+        Node node = new Node(item, null);
+        last.next = node;
+        last = node;
+    }
+         */
+
     public Number get(int i) {
         return entry(i).element;
     }
@@ -38,27 +48,27 @@ public class MyList {
     }
 
 
-    private Entry entry(int index) {
+    private Node entry(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
 
-        Entry entry = header;
+        Node node = header;
 
         for (int i = 0; i <= index; i++) {
-            entry = entry.next;
+            node = node.next;
         }
 
-        return entry;
+        return node;
     }
 
-    private static class Entry {
+    private static class Node {
         Number element;
-        Entry next;
+        Node next;
 
-        Entry() {
+        Node() {
         }
 
-        Entry(Number element, Entry next) {
+        Node(Number element, Node next) {
             this.element = element;
             this.next = next;
         }
