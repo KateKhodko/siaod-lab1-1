@@ -5,35 +5,6 @@ public class MyList {
 
     private int size = 0;
 
-
-    /*
-    public void add(Number item) {
-        if (size == 0) {
-            Node newEntry = new Node(item, null);
-            header.next = newEntry;
-            size++;
-        } else {
-            Node entry = header;
-            for (int i = 0; i <= size; i++) {
-                if (entry.next == null || item.getDegree() > entry.next.element.getDegree()) {
-                    Node newEntry = new Node(item, entry.next);
-                    entry.next = newEntry;
-                    size++;
-                    break;
-                } else if (item.getDegree() < entry.next.element.getDegree()) {
-                    entry = entry.next;
-                } else {
-                    double sum = entry.next.element.getNum() + item.getNum();
-                    entry.next.element = new Number(entry.next.element.getDegree(), sum);
-                    break;
-                }
-            }
-        }
-    }
-
-     */
-
-
     public void add(Number item) {
         Node node = new Node(item, null);
         if (header.next != null) {
@@ -78,7 +49,6 @@ public class MyList {
         for (int i = 0; i <= index; i++) {
             node = node.next;
         }
-
         return node;
     }
 

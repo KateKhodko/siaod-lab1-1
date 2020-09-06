@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-
         System.out.println("ВВОД ПЕРВОГО МНОГОЧЛЕНА");
         MyList list1 = sort(enter());
         System.out.println("\nВВОД ВТОРОГО МНОГОЧЛЕНА");
