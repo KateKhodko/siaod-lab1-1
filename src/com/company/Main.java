@@ -6,13 +6,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Ввод первого многочлена");
-        MyList list1 = enter();
-        System.out.println("Ввод второго многочлена");
-        MyList list2 = enter();
-        equality(sort(list1), sort(list2));
-        System.out.println("Введите x");
-        meaning(sort(list1), enterx());
+        System.out.println("ВВОД ПЕРВОГО МНОГОЧЛЕНА");
+        MyList list1 = sort(enter());
+        System.out.println("\nВВОД ВТОРОГО МНОГОЧЛЕНА");
+        MyList list2 = sort(enter());
+        System.out.println("\nВведите целочисленное значение x");
+        int x = enterx();
+        System.out.println("Первый многочлен: P(x) = "+getString(list1));
+        System.out.println("Второй многочлен: Q(x) = "+getString(list2));
+        equality(list1, list2);
+        meaning(list1, x);
         add(list1, list2);
     }
 
@@ -48,7 +51,7 @@ public class Main {
             }
             System.out.println("Желаете ввести еще одно слагаемое?\n" +
                     "1.да\n" +
-                    "2.нет\n");
+                    "2.нет");
             while (true) {
                 Scanner scan = new Scanner(System.in);
                 if (scan.hasNextInt()) {
@@ -66,7 +69,7 @@ public class Main {
         }
     }
 
-    public static double enterx() {
+    public static int enterx() {
         while (true) {
             Scanner scan = new Scanner(System.in);
             if (scan.hasNextInt()) {
@@ -96,10 +99,8 @@ public class Main {
     public static MyList checkCommon(MyList list) {
         for (int i = 1; i < list.size(); i++) {
             if (list.get(i).getDegree() == list.get(i - 1).getDegree()) {
-                int newDegree = list.get(i).getDegree() + list.get(i - 1).getDegree();
                 double newNum = list.get(i).getNum() + list.get(i - 1).getNum();
                 if (newNum != 0) {
-                    list.get(i - 1).setDegree(newDegree);
                     list.get(i - 1).setNum(newNum);
                     list.remove(i);
                 } else {
@@ -109,29 +110,34 @@ public class Main {
                 i--;
             }
         }
-        System.out.println(getString(list));
         return list;
     }
 
     public static void equality(MyList p, MyList q) {
         if (p.size() == q.size()) {
+            boolean flag = true;
             for (int i = 0; i < p.size(); i++) {
-                if (getString(p).equals(getString(q))) {
+                if (!(p.get(i).getNum() == q.get(i).getNum() && p.get(i).getDegree() == q.get(i).getDegree())) {
+                    flag = false;
                     break;
                 }
             }
-            System.out.println("Многочлены P(x) = " + getString(p) + " и Q(x) = " + getString(q) + " равны");
+            if (flag) {
+                System.out.println("Многочлены P(x) и Q(x) равны");
+            } else {
+                System.out.println("Многочлены P(x)  и Q(x) не равны");
+            }
         } else {
-            System.out.println("Многочлены P(x) = " + getString(p) + " и Q(x) = " + getString(q) + "не равны");
+            System.out.println("Многочлены P(x) и Q(x) не равны");
         }
     }
 
-    public static void meaning(MyList list, double x) {
+    public static void meaning(MyList list, int x) {
         double result = 0;
         for (int i = 0; i < list.size(); i++) {
             result += Math.pow(list.get(i).getNum() * x, list.get(i).getDegree());
         }
-        System.out.println("Результат " + result);
+        System.out.println("Значение многочлена P(x) в точке x = " + result);
     }
 
     public static void add(MyList p, MyList q) {
