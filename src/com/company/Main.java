@@ -31,7 +31,7 @@ public class Main {
                         break;
                     }
                 } else {
-                    System.out.println("Степень должна быть целым положительным числом!");
+                    System.out.println("Степень слишком большая или вы ввели не целое положительное число!");
                 }
             }
             double num;
@@ -134,7 +134,7 @@ public class Main {
     public static void meaning(MyList list, int x) {
         double result = 0;
         for (int i = 0; i < list.size(); i++) {
-            result += Math.pow(list.get(i).getNum() * x, list.get(i).getDegree());
+            result += list.get(i).getNum() * Math.pow(x, list.get(i).getDegree());
         }
         System.out.println("Значение многочлена P(x) в точке x = " + result);
     }
@@ -151,13 +151,13 @@ public class Main {
     }
 
     public static String getString(MyList list) {
-        String str = "0";
+        StringBuilder str = new StringBuilder("0");
         if (!list.isEmpty()) {
-            str = list.get(0).toString();
+            str = new StringBuilder(list.get(0).toString());
         }
         for (int i = 1; i < list.size(); i++) {
-            str += " + " + list.get(i).toString();
+            str.append(" + ").append(list.get(i).toString());
         }
-        return str;
+        return str.toString();
     }
 }
